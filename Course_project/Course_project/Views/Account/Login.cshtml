@@ -1,0 +1,62 @@
+﻿@model Course_project.ViewModels.Account.LoginViewModel
+@{ 
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col align-self-center">
+            <h2 class="h2">Log in</h2>
+        </div>
+    </div>
+    <form class="form-horizontal" method="post" asp-controller="Account" asp-action="Login"
+          asp-route-returnUrl="@Model.ReturnUrl">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="Login">Login</label>
+            <div class="col-4">
+                <input class="form-control" placeholder="Input login" autocomplete="off" type="text" asp-for="Login" />
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="Login"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="Password">Password</label>
+            <div class="col-4">
+                <input class="form-control" placeholder="Input password" autocomplete="off" type="password" asp-for="Password" />
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="Password"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
+            <div class="col-2"></div>
+            <div class="col-10">
+                <div class="checkbox">
+                    <label asp-for="RememberMe">Remember me</label>
+                    <input type="checkbox" asp-for="RememberMe" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group row align-items-center justify-content-start offset-2">
+            <div class="col-1 align-self-start mr-1 no-gutters">
+                <button class="btn btn-lg btn-social-icon btn-google" type="submit" asp-area="" asp-controller="Account" asp-action="GoogleLogin" value="google">
+                    <i class="fa fa-google fa-5x"></i>
+                </button>
+            </div>
+            <div class="col-1 align-self-start no-gutters">
+                <button class="btn btn-lg btn-social-icon btn-facebook" type="submit" asp-area="" asp-controller="Account" asp-action="FacebookLogin" value="facebook">
+                    <i class="fa fa-facebook fa-5x"></i>
+                </button>
+            </div>
+            <div class="col-9"></div>
+        </div>
+        <div class="form-group row align-items-center">
+            <div class="col-2"></div>
+            <div class="col-10">
+                <input class="btn btn-primary" type="submit" value="Login" />
+            </div>
+        </div>
+    </form>
+</div>

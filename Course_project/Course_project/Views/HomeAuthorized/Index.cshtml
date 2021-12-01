@@ -1,0 +1,23 @@
+﻿@model Course_project.ViewModels.HomeAuthorized.IndexViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section NavbarUserNickname
+{
+    @if (User.Identity.IsAuthenticated)
+    {
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.Nickname);
+    }
+    else
+    {
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml");
+    }
+}
+
+<div>
+    <p>@Model.Nickname</p>
+    <form method="post" asp-controller="Account" asp-action="Logout">
+        <input type="submit" value="Выход" />
+    </form>
+</div>
