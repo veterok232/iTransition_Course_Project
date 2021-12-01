@@ -1,0 +1,80 @@
+﻿@model Course_project.ViewModels.HomeAuthorized.ReviewViewModel
+@{
+    ViewData["Title"] = "Create review";
+}
+
+@section NavbarUserNickname
+{
+    @if (User.Identity.IsAuthenticated)
+    {
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.Review.AuthorNickname);
+    }
+    else
+    {
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml");
+    }
+}
+
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col align-self-center">
+            <h2 class="h2">Create review</h2>
+        </div>
+    </div>
+    <form class="form-horizontal" method="post" asp-controller="HomeAuthorized" asp-action="CreateReview" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="@Model.Review.Title">Title:</label>
+            <div class="col-4">
+                <input class="form-control" placeholder="Title" autocomplete="off" name="title" type="text" asp-for="@Model.Review.Title" />
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="@Model.Review.Title"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="@Model.Review.GroupId">Group:</label>
+            <div class="col-4">
+                <select class="form-control" name="group" asp-for="@Model.Review.GroupId" asp-items="@Model.ReviewGroups"></select>
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="@Model.Review.GroupId"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="@Model.Review.Text">Content:</label>
+            <div class="col-4">
+                <textarea class="form-control" name="text" placeholder="Input review text..." wrap="soft" asp-for="@Model.Review.Text"></textarea>
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="@Model.Review.Text"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center mb-2">
+            <label class="col-2 control-label" asp-for="@Model.ReviewImagesFiles">Upload images:</label>
+            <div class="col-4">
+                <input class="form-control" type="file" name="ReviewImagesFiles"/>
+                <input class="form-control" type="file" name="ReviewImagesFiles" />
+                <input class="form-control" type="file" name="ReviewImagesFiles" />
+            </div>
+            <div class="col-6">
+                @*<span asp-validation-for="Password"></span>*@
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="@Model.Review.AuthorMark">Mark:</label>
+            <div class="col-4">
+                <select class="form-control" name="authorMark" asp-for="@Model.Review.AuthorMark" asp-items="@Model.ReviewMarks"></select>
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="@Model.Review.AuthorMark"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
+            <div class="col-2"></div>
+            <div class="col-10">
+                <input class="btn btn-primary" type="submit" value="Create review" />
+            </div>
+        </div>
+    </form>
+</div>
