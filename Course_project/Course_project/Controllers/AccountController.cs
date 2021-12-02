@@ -41,8 +41,17 @@ namespace Course_project.Controllers
             if (ModelState.IsValid)
             {
                 User user = new User { UserName = model.Login, Nickname = model.Nickname, Email = model.Email };
-
-                var result = await userManager.CreateAsync(user, model.Password);
+                IdentityResult result = null;
+                try
+                {
+                    result = await userManager.CreateAsync(user, model.Password);
+                }
+                catch 
+                {
+                    ModelState.AddModelError(string.Empty, "This user has already registered!");
+                    return View(model);
+                }
+                
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(user, "user");

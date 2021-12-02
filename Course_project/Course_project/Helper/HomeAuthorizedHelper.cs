@@ -25,15 +25,15 @@ namespace Course_project.Helper
             return new IndexViewModel() { Nickname = user.Nickname };
         }
 
-        internal static async Task<ReviewViewModel> GetReviewViewModel(
+        internal static async Task<ReviewViewModel> GetViewModel(
             UserManager<User> userManager,
             IIdentity userIdentity,
             ApplicationDbContext db)
         {
             var user = await userManager.FindByNameAsync(userIdentity.Name);
             var reviewGroups = db.ReviewGroups.ToList();
-            return new ReviewViewModel() 
-            { 
+            return new ReviewViewModel()
+            {
                 Review = new Review()
                 {
                     AuthorId = user.Id,
@@ -44,7 +44,8 @@ namespace Course_project.Helper
                 ReviewMarks = CreateReviewMarksList(),
                 ReviewImages = null,
                 ReviewComments = new List<Comment>(),
-                ReviewTags = new List<ReviewTag>()
+                ReviewTags = new List<ReviewTag>(),
+                UserNickname = user.Nickname
             };
         }
 
@@ -53,6 +54,7 @@ namespace Course_project.Helper
             string fileNameForStorage = CreateFileName(reviewImage.ImageFile.FileName);
             reviewImage.ImageUrl = await cloudStorage.UploadFileAsync(reviewImage.ImageFile, fileNameForStorage);
             reviewImage.ImageStorageName = fileNameForStorage;
+            reviewImage.ImageFileName = reviewImage.ImageFile.FileName;
         }
 
         private static string CreateFileName(string fileName)

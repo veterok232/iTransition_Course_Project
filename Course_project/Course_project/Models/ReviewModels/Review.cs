@@ -25,5 +25,7 @@ namespace Course_project.Models
         public DateTime PublicationDate { get; set; }
 
         public int CommentsCount { get; set; }
+
+        public string ImageUrl { get; set; } = "https://storage.googleapis.com/itransitioncourseproject-veterok232-bucket/no-image.jpg";
     }
 }

@@ -24,5 +24,17 @@ namespace Course_project.ViewModels.HomeAuthorized
         public List<ReviewTag> ReviewTags { get; set; }
 
         public List<Comment> ReviewComments { get; set; }
+
+        public string UserNickname { get; set; }
+
+        public ReviewViewModel()
+        {
+            Review = new Review();
+            ReviewGroups = new List<SelectListItem>();
+            ReviewMarks = new List<SelectListItem>();
+            ReviewImages = new List<ReviewImage>();
+            ReviewTags = new List<ReviewTag>();
+            ReviewComments = new List<Comment>();
+        }
     }
 }

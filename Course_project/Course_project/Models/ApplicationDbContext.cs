@@ -8,6 +8,7 @@ namespace Course_project.Models
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {
+        public DbSet<FileModel> Files { get; set; }
         public DbSet<Review> Reviews { get; set; }
 
         public DbSet<Comment> Comments { get; set; }

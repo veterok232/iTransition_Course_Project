@@ -22,6 +22,7 @@
     <Folder Include="Data\" />
     <Folder Include="Services\Api\" />
     <Folder Include="ViewModels\HomeGuest\" />
+    <Folder Include="wwwroot\Files\" />
   </ItemGroup>
 
 </Project>
