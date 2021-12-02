@@ -26,6 +26,8 @@ namespace Course_project.Models
 
         public int CommentsCount { get; set; }
 
+        public int AverageRating { get; set; }
+
         public string ImageUrl { get; set; } = "https://storage.googleapis.com/itransitioncourseproject-veterok232-bucket/no-image.jpg";
     }
 }

@@ -13,15 +13,27 @@ namespace Course_project.Controllers
     {
         private readonly ILogger<HomeGuestController> _logger;
 
-        public HomeGuestController(ILogger<HomeGuestController> logger)
+       // private ApplicationDbContext db;
+
+        public HomeGuestController(
+            ILogger<HomeGuestController> logger)
         {
             _logger = logger;
+            //db = context;
         }
 
         public IActionResult Index()
         {
+            //var reviews = db.Reviews.ToList();
+
+
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "HomeAuthorized");
+            return View();
+        }
+
+        public IActionResult Reviews()
+        {
             return View();
         }
 

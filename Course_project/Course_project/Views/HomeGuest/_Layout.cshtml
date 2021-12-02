@@ -21,21 +21,14 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="HomeGuest" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Reviews</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="HomeGuest" asp-action="Reviews">Reviews</a>
                         </li>
                     </ul>
                 </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml");
-                }
-                else
-                {
-                    await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml");
-                }
+                @RenderSection("NavbarUserNickname")
             </div>
         </nav>
     </header>

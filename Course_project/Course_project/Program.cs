@@ -10,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Identity;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Extensions.Configuration.AzureKeyVault;
 
 namespace Course_project
 {
@@ -48,5 +52,23 @@ namespace Course_project
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        /* Host.CreateDefaultBuilder(args)
+         .ConfigureAppConfiguration((context, config) =>
+         {
+             var settings = config.Build();
+
+             var keyVaultEndpoint = settings["AzureKeyVaultEndpoint"];
+             //var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("VaultUri"));
+             if (!string.IsNullOrEmpty(keyVaultEndpoint))
+             {
+                 var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                 var keyVaultClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
+                 config.AddAzureKeyVault(keyVaultEndpoint, keyVaultClient, new DefaultKeyVaultSecretManager());
+             }
+         })
+             .ConfigureWebHostDefaults(webBuilder =>
+             {
+                 webBuilder.UseStartup<Startup>();
+             });*/
     }
 }

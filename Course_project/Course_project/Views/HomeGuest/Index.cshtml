@@ -1,9 +1,14 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
+}
+
+@section NavbarUserNickname
+{
+    @{ await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml"); }
 }
 
 <div>
     <a asp-controller="Account" asp-action="Login">Вход</a>
     <a asp-controller="Account" asp-action="Register">Регистрация</a>
 </div>
-    
