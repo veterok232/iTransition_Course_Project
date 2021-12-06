@@ -1,0 +1,100 @@
+﻿@model Course_project.ViewModels.Account.AdminAccountViewModel
+@{
+    ViewData["Title"] = "Admin account";
+}
+
+@section UserNickname
+{
+    @{ await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.UserNickname); }
+}
+
+<div class="container">
+    <div class="row justify-content-left mb-4">
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input class="btn btn-danger" type="submit" value="Logout" />
+        </form>
+    </div>
+
+    <div class="row justify-content-center mb-4">
+        <div class="col text-center">
+            <h2 class="h2 font-weight-bold pb-0 mb-4">Personal account</h2>
+        </div>
+    </div>
+    <form class="row form-inline justify-content-center" method="get">
+        <div class="form-row">
+            <div class="col-3">
+                <div class="row">
+                    <label class="col-4 ml-0 pl-0 ml-0 mr-0 control-label">User Id: </label>
+                    <input name="userId" placeholder="User id" value="@Model.FilterViewModel.UserIdFilter" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-4 ml-0 pl-0 ml-0 mr-0 control-label">User name: </label>
+                    <input name="userName" placeholder="Username" value="@Model.FilterViewModel.UserNameFilter" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-4 col-4 ml-0 pl-0 ml-0 mr-0 control-label">Sort by: </label>
+                    <select name="sortOrder" class="col-7 ml-0 pl-0 ml-0 mr-1 form-control"
+                            asp-items="@Model.SortViewModel.SortBySelect"></select>
+                </div>
+            </div>
+            <div class="col-1">
+                <input type="submit" value="Confirm" class="btn btn-outline-dark" />
+            </div>
+        </div>
+    </form>
+
+    @if (Model.Users.Count == 0)
+    {
+        <div class="row p-4 m-4 mb-1">
+            <span class="text-info">There are no users..</span>
+        </div>
+    }
+
+    <div class="row p-4 m-4">
+
+    </div>
+    @foreach (var user in Model.Users)
+    {
+        <div class="row mb-1">
+            <a asp-controller="Account" 
+               asp-action="UserPage" 
+               asp-route-userId="@user.Id">@user.Nickname (#@user.UserName)</a>
+        </div>
+    }
+
+    <div class="row p-4 mt-0">
+        <div class="col">
+            @if (Model.PageViewModel.HasPreviousPage)
+            {
+                <a asp-controller="Account"
+                   asp-action="AdminAccount"
+                   asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+                   asp-route-userId="@(Model.UserId)"
+                   asp-route-userName="@(Model.UserName)"
+                   class="btn btn-outline-dark">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                    Prev
+                </a>
+            }
+            @if (Model.PageViewModel.HasNextPage)
+            {
+                <a asp-action="Reviews"
+                   asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                   asp-route-userId="@(Model.UserId)"
+                   asp-route-userName="@(Model.UserName)"
+                   class="btn btn-outline-dark">
+                    Next
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            }
+            @if (Model.PageViewModel.TotalPages > 1)
+            {
+                <span class="text-info"> (@Model.PageViewModel.PageNumber from @Model.PageViewModel.TotalPages)</span>
+            }
+        </div>
+    </div>
+</div>

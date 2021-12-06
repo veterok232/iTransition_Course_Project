@@ -27,37 +27,44 @@
             <div class="col-3">
                 <div class="row">
                     <label class="col-4 ml-0 pl-0 ml-0 mr-0 control-label">Review: </label>
-                    <input name="title" placeholder="Title" value="@Model.FilterViewModel.TitleFilter" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control" />
+                    <input name="title" placeholder="Title" value="@Model.FilterViewModel.TitleFilter" class="col-6 ml-0 pl-0 ml-0 mr-1 form-control" />
                 </div>
             </div>
             <div class="col-3">
                 <div class="row">
-                    <label  class="col-4 ml-0 pl-0 ml-0 mr-0 control-label">Author: </label>
-                    <input name="author" placeholder="Author" value="@Model.FilterViewModel.AuthorFilter" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control" />
+                    <label class="col-4 ml-0 pl-0 ml-0 mr-0 control-label">Author: </label>
+                    <input name="author" placeholder="Author" value="@Model.FilterViewModel.AuthorFilter" class="col-6 ml-0 pl-0 ml-0 mr-1 form-control" />
                 </div>
             </div>
             <div class="col-2">
                 <div class="row">
                     <label class="col-4 col-4 ml-0 pl-0 ml-0 mr-0 control-label">Group: </label>
-                    <select name="groupId" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control"
+                    <select name="groupId" class="col-6 ml-0 pl-0 ml-0 mr-1 form-control"
                             asp-items="@Model.FilterViewModel.ReviewGroupsSelect"></select>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <div class="row">
                     <label class="col-4 col-4 ml-0 pl-0 ml-0 mr-0 control-label">Sort by: </label>
-                    <select name="sortOrder" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control"
+                    <select name="sortOrder" class="col-6 ml-0 pl-0 ml-0 mr-1 form-control"
                             asp-items="@Model.SortViewModel.SortBySelect"></select>
                 </div>
             </div>
-            <div class="col-2">
+            <div class="col-1">
                 <input type="submit" value="Confirm" class="btn btn-outline-dark" />
             </div>
         </div>
     </form>
 
+    @if (Model.Reviews.Count == 0)
+    {
+        <div class="row p-4 m-4 mb-3">
+            <span class="text-info">There are no reviews..</span>
+        </div>
+    }
+
     @foreach (var review in Model.Reviews)
-     {
+    {
         <div class="row p-4 m-4 mb-3 border rounded shadow-sm">
             <div class="col">
                 <div class="row">
@@ -77,46 +84,76 @@
                         <div class="row pt-0 mt-0 pb-0 mb-0">
                             <div class="col">
                                 <p class="pt-0 mt-0 pb-0 mb-0">
-                                    <span class="text-muted">@review.AuthorNickname</span> (<a asp-controller="Account" asp-action="PersonalAccount">#@review.AuthorUserName</a>)
+                                    <span class="text-dark">"@review.ReviewTitle"</span>
                                 </p>
                             </div>
                         </div>
-                        <div class="row pt-0 mt-0">
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
                             <div class="col">
-                                <p>
-                                    <span>Group: @Model.ReviewGroups[review.GroupId]</span>
-                                </p>
+                                <span>Rating: @review.AverageRating</span>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
                             <div class="col">
-                                <p>@review.AuthorMark of 10</p>
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-muted">@review.AuthorNickname</span>
+                                    (<a asp-controller="Account"
+                                        asp-action="UserPage"
+                                        asp-route-userId="@review.AuthorId">#@review.AuthorUserName</a>)
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <a asp-controller="Account" asp-action="ReadReview">Read review.. </a>
-                                    @if (Model.UserName == review.AuthorUserName)
-                                    {
-                                        <a asp-controller="Account" asp-action="EditReview">Edit review..</a>
-                                    }
-                                </p>
+                            <div class="row pt-0 mt-0">
+                                <div class="col">
+                                    <p>
+                                        <span>Group: @Model.ReviewGroups[review.GroupId]</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>@review.AuthorMark of 10</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>
+                                        <a class="btn btn-primary"
+                                           asp-controller="HomeAuthorized"
+                                           asp-action="ReadReview"
+                                           asp-route-reviewId="@review.Id">Read review</a>
+                                        @if ((Model.UserName == review.AuthorUserName) ||
+                                             (Model.UserName == "admin"))
+                                        {
+                                            <a class="btn btn-primary"
+                                               asp-controller="HomeAuthorized"
+                                               asp-action="EditReview"
+                                               asp-route-reviewId="@review.Id">Edit review</a>
+                                            <a class="btn btn-primary"
+                                               asp-controller="HomeAuthorized"
+                                               asp-action="DeleteReview"
+                                               asp-route-reviewId="@review.Id">Delete review</a>
+                                        }
+                                    </p>
+
+                                </div>
 
                             </div>
-
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col text-right">
-                        <a asp-controller="Account" asp-action="ReadReview">@review.CommentsCount Comments</a>
-                        <a asp-controller="Account" asp-action="ReadReview">@review.LikesCount Likes</a>
+                    <div class="row">
+                        <div class="col text-right">
+                            <a asp-controller="HomeAuthorized"
+                               asp-action="ReadReview"
+                               asp-route-reviewId="@review.Id">@review.CommentsCount Comments</a>
+                            <a asp-controller="HomeAuthorized"
+                               asp-action="ReadReview"
+                               asp-route-reviewId="@review.Id">@review.LikesCount Likes</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-     }
+        }
 
     <div class="row p-4 mt-0">
         <div class="col">
@@ -127,7 +164,7 @@
                    asp-route-title="@(Model.FilterViewModel.TitleFilter)"
                    asp-route-company="@(Model.FilterViewModel.SelectedGroup)"
                    asp-route-sortorder="@(Model.SortViewModel.CurrentSort)"
-                   class="btn  btn-outline-dark">
+                   class="btn btn-outline-dark">
                     <i class="glyphicon glyphicon-chevron-left"></i>
                     Prev
                 </a>
@@ -144,65 +181,10 @@
                     <i class="glyphicon glyphicon-chevron-right"></i>
                 </a>
             }
+            @if (Model.PageViewModel.TotalPages > 1)
+            {
+                <span class="text-info"> (@Model.PageViewModel.PageNumber from @Model.PageViewModel.TotalPages)</span>
+            }
         </div>
     </div>
-    
-
-
-    @*<form class="form-horizontal" method="post" asp-controller="HomeAuthorized" asp-action="CreateReview" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly"></div>
-            <div class="form-group row align-items-center">
-                <label class="col-2 control-label" asp-for="@Model.Review.Title">Title:</label>
-                <div class="col-4">
-                    <input class="form-control" placeholder="Title" autocomplete="off" type="text" asp-for="@Model.Review.Title" />
-                </div>
-                <div class="col-6">
-                    <span asp-validation-for="@Model.Review.Title"></span>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label class="col-2 control-label" asp-for="@Model.Review.GroupId">Group:</label>
-                <div class="col-4">
-                    <select class="form-control" asp-for="@Model.Review.GroupId" asp-items="@Model.ReviewGroups"></select>
-                </div>
-                <div class="col-6">
-                    <span asp-validation-for="@Model.Review.GroupId"></span>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label class="col-2 control-label" asp-for="@Model.Review.Text">Content:</label>
-                <div class="col-4">
-                    <textarea class="form-control" placeholder="Input review text..." wrap="soft" asp-for="@Model.Review.Text"></textarea>
-                </div>
-                <div class="col-6">
-                    <span asp-validation-for="@Model.Review.Text"></span>
-                </div>
-            </div>
-            <div class="form-group row align-items-center mb-2">
-                <label class="col-2 control-label" asp-for="@Model.ReviewImagesFiles">Upload images:</label>
-                <div class="col-4">
-                    <input class="form-control" type="file" name="ReviewImagesFiles" />
-                    <input class="form-control" type="file" name="ReviewImagesFiles" />
-                    <input class="form-control" type="file" name="ReviewImagesFiles" />
-                </div>
-                <div class="col-6">-->-->
-        @*<span asp-validation-for="Password"></span>
-        </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <label class="col-2 control-label" asp-for="@Model.Review.AuthorMark">Mark:</label>
-                <div class="col-4">
-                    <select class="form-control" asp-for="@Model.Review.AuthorMark" asp-items="@Model.ReviewMarks"></select>
-                </div>
-                <div class="col-6">
-                    <span asp-validation-for="@Model.Review.AuthorMark"></span>
-                </div>
-            </div>
-            <div class="form-group row align-items-center">
-                <div class="col-2"></div>
-                <div class="col-10">
-                    <input class="btn btn-primary" type="submit" value="Create review" />
-                </div>
-            </div>
-        </form>*@
 </div>

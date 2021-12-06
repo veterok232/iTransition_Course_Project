@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/course-projectdbserver/databases/Course_project_db",
-      "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:DefaultConnection",
-      "secretStore": "AzureAppSettings"
-    },
     "secrets1": {
       "type": "secrets",
       "connectionId": "",
@@ -17,6 +11,12 @@
       "connectionId": "ConnectionStrings:LocalDbConnection",
       "suggestion": "true",
       "ignored": "true"
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/course-project2dbserver/databases/Course_project_db2",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "secretStore": "AzureAppSettings"
     }
   }
 }

@@ -8,7 +8,7 @@ namespace Course_project.Models
     public class Comment
     {
         public int Id { get; set; }
-        public int ReviewId { get; set; }
+        public string ReviewId { get; set; }
 
         public string AuthorId { get; set; }
 

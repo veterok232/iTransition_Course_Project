@@ -7,7 +7,7 @@
 {
     @if (User.Identity.IsAuthenticated)
     {
-        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.Nickname);
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.UserNickname);
     }
     else
     {
@@ -15,9 +15,206 @@
     }
 }
 
-<div>
-    <p>@Model.Nickname</p>
-    <form method="post" asp-controller="Account" asp-action="Logout">
-        <input type="submit" value="Выход" />
-    </form>
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col text-center">
+            <h2 class="h2 font-weight-bold pb-0 mb-4">Top-5 most rating reviews</h2>
+        </div>
+    </div>
+
+    @if (Model.ReviewsMostRating.Count == 0)
+    {
+        <div class="row p-4 m-4 mb-3">
+            <span class="text-info">There are no reviews..</span>
+        </div>
+    }
+
+    @foreach (var review in Model.ReviewsMostRating)
+    {
+        <div class="row p-4 m-4 mb-3 border rounded shadow-sm">
+            <div class="col">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="@review.ImageUrl"
+                             alt="Review image" class="img-fluid" />
+                    </div>
+                    <div class="col-9">
+                        <div class="row pb-0 mb-0">
+                            <div class="col-9 justify-content-start">
+                                <h3 class="h3 font-weight-bold pb-0 mb-0">@review.Title</h3>
+                            </div>
+                            <div class="col-3 justify-content-end pb-0 mb-0">
+                                <span>@review.PublicationDate.ToString()</span>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-dark">"@review.ReviewTitle"</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <span>Rating: @review.AverageRating</span>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-muted">@review.AuthorNickname</span>
+                                    (<a asp-controller="Account"
+                                        asp-action="UserPage"
+                                        asp-route-userId="@review.AuthorId">#@review.AuthorUserName</a>)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row pt-0 mt-0">
+                                <div class="col">
+                                    <p>
+                                        <span>Group: @Model.ReviewGroups[review.GroupId]</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>@review.AuthorMark of 10</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>
+                                        <a class="btn btn-primary"
+                                           asp-controller="HomeAuthorized"
+                                           asp-action="ReadReview"
+                                           asp-route-reviewId="@review.Id">Read review</a>
+                                        @if ((Model.UserName == review.AuthorUserName) ||
+                                             (Model.UserName == "admin"))
+                                        {
+                                            <a class="btn btn-primary"
+                                               asp-controller="HomeAuthorized"
+                                               asp-action="EditReview"
+                                               asp-route-reviewId="@review.Id">Edit review</a>
+                                            <a class="btn btn-primary"
+                                               asp-controller="HomeAuthorized"
+                                               asp-action="DeleteReview"
+                                               asp-route-reviewId="@review.Id">Delete review</a>
+                                        }
+                                    </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right">
+                            <a asp-controller="HomeAuthorized" asp-action="ReadReview">@review.CommentsCount Comments</a>
+                            <a asp-controller="HomeAuthorized" asp-action="ReadReview">@review.LikesCount Likes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    <hr />
+    <div class="row justify-content-center mb-4">
+        <div class="col text-center">
+            <h2 class="h2 font-weight-bold pb-0 mb-4">Last 5 reviews</h2>
+        </div>
+    </div>
+
+    @if (Model.ReviewsLast.Count == 0)
+    {
+        <div class="row p-4 m-4 mb-3">
+            <span class="text-info">There are no reviews..</span>
+        </div>
+    }
+
+    @foreach (var review in Model.ReviewsLast)
+    {
+        <div class="row p-4 m-4 mb-3 border rounded shadow-sm">
+            <div class="col">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="@review.ImageUrl"
+                             alt="Review image" class="img-fluid" />
+                    </div>
+                    <div class="col-9">
+                        <div class="row pb-0 mb-0">
+                            <div class="col-9 justify-content-start">
+                                <h3 class="h3 font-weight-bold pb-0 mb-0">@review.Title</h3>
+                            </div>
+                            <div class="col-3 justify-content-end pb-0 mb-0">
+                                <span>@review.PublicationDate.ToString()</span>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-dark">"@review.ReviewTitle"</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <span>Rating: @review.AverageRating</span>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-muted">@review.AuthorNickname</span>
+                                    (<a asp-controller="Account"
+                                        asp-action="UserPage"
+                                        asp-route-userId="@review.AuthorId">#@review.AuthorUserName</a>)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row pt-0 mt-0">
+                                <div class="col">
+                                    <p>
+                                        <span>Group: @Model.ReviewGroups[review.GroupId]</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>@review.AuthorMark of 10</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>
+                                        <a class="btn btn-primary"
+                                           asp-controller="HomeAuthorized"
+                                           asp-action="ReadReview"
+                                           asp-route-reviewId="@review.Id">Read review</a>
+                                        @if ((Model.UserName == review.AuthorUserName) ||
+                                             (Model.UserName == "admin"))
+                                            {
+                                                <a class="btn btn-primary"
+                                                   asp-controller="HomeAuthorized"
+                                                   asp-action="EditReview"
+                                                   asp-route-reviewId="@review.Id">Edit review</a>
+                                                <a class="btn btn-primary"
+                                                   asp-controller="HomeAuthorized"
+                                                   asp-action="DeleteReview"
+                                                   asp-route-reviewId="@review.Id">Delete review</a>
+                                            }
+                                        </p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right">
+                            <a asp-controller="HomeAuthorized" asp-action="ReadReview">@review.CommentsCount Comments</a>
+                            <a asp-controller="HomeAuthorized" asp-action="ReadReview">@review.LikesCount Likes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 </div>

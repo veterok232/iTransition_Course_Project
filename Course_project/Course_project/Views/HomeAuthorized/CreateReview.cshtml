@@ -34,6 +34,15 @@
             </div>
         </div>
         <div class="form-group row align-items-center">
+            <label class="col-2 control-label" asp-for="@Model.Review.ReviewTitle">Review header:</label>
+            <div class="col-4">
+                <input class="form-control" placeholder="Review header" autocomplete="off" type="text" asp-for="@Model.Review.ReviewTitle" />
+            </div>
+            <div class="col-6">
+                <span asp-validation-for="@Model.Review.ReviewTitle"></span>
+            </div>
+        </div>
+        <div class="form-group row align-items-center">
             <label class="col-2 control-label" asp-for="@Model.Review.GroupId">Group:</label>
             <div class="col-4">
                 <select class="form-control" asp-for="@Model.Review.GroupId" asp-items="@Model.ReviewGroups"></select>
@@ -44,19 +53,19 @@
         </div>
         <div class="form-group row align-items-center">
             <label class="col-2 control-label" asp-for="@Model.Review.Text">Content:</label>
-            <div class="col-4">
-                <textarea class="form-control" placeholder="Input review text..." wrap="soft" asp-for="@Model.Review.Text"></textarea>
+            <div class="col-8">
+                <textarea class="form-control" rows="20" wrap="hard" placeholder="Input review text..." asp-for="@Model.Review.Text"></textarea>
             </div>
-            <div class="col-6">
+            <div class="col-2">
                 <span asp-validation-for="@Model.Review.Text"></span>
             </div>
         </div>
         <div class="form-group row align-items-center mb-2">
             <label class="col-2 control-label" asp-for="@Model.ReviewImagesFiles">Upload images:</label>
             <div class="col-4">
-                <input class="form-control" type="file" name="ReviewImagesFiles"/>
-                <input class="form-control" type="file" name="ReviewImagesFiles" />
-                <input class="form-control" type="file" name="ReviewImagesFiles" />
+                <input class="form-control mb-1 pb-1" type="file" name="ReviewImagesFiles" />
+                <input class="form-control mb-1 pb-1" type="file" name="ReviewImagesFiles" />
+                <input class="form-control mb-1 pb-1" type="file" name="ReviewImagesFiles" />
             </div>
             <div class="col-6">
                 @*<span asp-validation-for="Password"></span>*@

@@ -1,0 +1,181 @@
+﻿@model Course_project.ViewModels.Account.PersonalAccountViewModel
+@{
+    ViewData["Title"] = "Personal account - " + Model.UserName;
+}
+
+@section UserNickname
+{
+    @{ await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.UserNickname); }
+}
+
+<div class="container">
+    <div class="row justify-content-left mb-4">
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input class="btn btn-danger" type="submit" value="Logout" />
+        </form>
+    </div>
+    
+    <div class="row justify-content-center mb-4">
+        <div class="col text-center">
+            <h2 class="h2 font-weight-bold pb-0 mb-4">Personal account</h2>
+        </div>
+    </div>
+    <form class="row form-inline justify-content-center" method="get">
+        <div class="form-row">
+            <div class="col-3">
+                <div class="row">
+                    <label class="col-4 ml-0 pl-0 ml-0 mr-0 control-label">Review: </label>
+                    <input name="title" placeholder="Title" value="@Model.FilterViewModel.TitleFilter" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-4 col-4 ml-0 pl-0 ml-0 mr-0 control-label">Group: </label>
+                    <select name="groupId" class="col-6 col-4 ml-0 pl-0 ml-0 mr-1 form-control"
+                            asp-items="@Model.FilterViewModel.ReviewGroupsSelect"></select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="row">
+                    <label class="col-4 col-4 ml-0 pl-0 ml-0 mr-0 control-label">Sort by: </label>
+                    <select name="sortOrder" class="col-7 ml-0 pl-0 ml-0 mr-1 form-control"
+                            asp-items="@Model.SortViewModel.SortBySelect"></select>
+                </div>
+            </div>
+            <input type="hidden" name="userId" value="@Model.UserId" />
+            <div class="col-1">
+                <input type="submit" value="Confirm" class="btn btn-outline-dark" />
+            </div>
+        </div>
+    </form>
+
+    @if(Model.Reviews.Count == 0)
+    {
+        <div class="row p-4 m-4 mb-3">
+            <span class="text-info">There are no reviews..</span>
+        </div>
+    }
+
+    @foreach (var review in Model.Reviews)
+    {
+        <div class="row p-4 m-4 mb-3 border rounded shadow-sm">
+            <div class="col">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="@review.ImageUrl"
+                             alt="Review image" class="img-fluid" />
+                    </div>
+                    <div class="col-9">
+                        <div class="row pb-0 mb-0">
+                            <div class="col-9 justify-content-start">
+                                <h3 class="h3 font-weight-bold pb-0 mb-0">@review.Title</h3>
+                            </div>
+                            <div class="col-3 justify-content-end pb-0 mb-0">
+                                <span>@review.PublicationDate.ToString()</span>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-dark">"@review.ReviewTitle"</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <span>Rating: @review.AverageRating</span>
+                            </div>
+                        </div>
+                        <div class="row pt-0 mt-0 pb-0 mb-0">
+                            <div class="col">
+                                <p class="pt-0 mt-0 pb-0 mb-0">
+                                    <span class="text-muted">@review.AuthorNickname</span>
+                                    (<a asp-controller="Account"
+                                        asp-action="UserPage"
+                                        asp-route-userId="@review.AuthorId">#@review.AuthorUserName</a>)
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row pt-0 mt-0">
+                                <div class="col">
+                                    <p>
+                                        <span>Group: @Model.ReviewGroups[review.GroupId]</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>@review.AuthorMark of 10</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <p>
+                                        <a class="btn btn-primary"
+                                           asp-controller="HomeAuthorized"
+                                           asp-action="ReadReview"
+                                           asp-route-reviewId="@review.Id">Read review</a>
+                                         @if ((Model.UserName == review.AuthorUserName) ||
+                                              (Model.UserName == "admin"))
+                                        {
+                                            <a class="btn btn-primary"
+                                               asp-controller="HomeAuthorized"
+                                               asp-action="EditReview"
+                                               asp-route-reviewId="@review.Id">Edit review</a>
+                                            <a class="btn btn-primary"
+                                               asp-controller="HomeAuthorized"
+                                               asp-action="DeleteReview"
+                                               asp-route-reviewId="@review.Id">Delete review</a>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-right">
+                            <a asp-controller="HomeAuthorized"
+                               asp-action="ReadReview"
+                               asp-route-reviewId="@review.Id">@review.CommentsCount Comments</a>
+                            <a asp-controller="HomeAuthorized"
+                               asp-action="ReadReview"
+                               asp-route-reviewId="@review.Id">@review.LikesCount Likes</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    <div class="row p-4 mt-0">
+        <div class="col">
+            @if (Model.PageViewModel.HasPreviousPage)
+            {
+                <a asp-action="Reviews"
+                   asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+                   asp-route-title="@(Model.FilterViewModel.TitleFilter)"
+                   asp-route-reviewGroup="@(Model.FilterViewModel.SelectedGroup)"
+                   asp-route-sortOrder="@(Model.SortViewModel.CurrentSort)"
+                   class="btn btn-outline-dark">
+                    <i class="glyphicon glyphicon-chevron-left"></i>
+                    Prev
+                </a>
+            }
+            @if (Model.PageViewModel.HasNextPage)
+            {
+                <a asp-action="Reviews"
+                   asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                   asp-route-title="@(Model.FilterViewModel.TitleFilter)"
+                   asp-route-reviewGroup="@(Model.FilterViewModel.SelectedGroup)"
+                   asp-route-sortOrder="@(Model.SortViewModel.CurrentSort)"
+                   class="btn btn-outline-dark">
+                    Next
+                    <i class="glyphicon glyphicon-chevron-right"></i>
+                </a>
+            }
+            @if (Model.PageViewModel.TotalPages > 1)
+            {
+                <span class="text-info"> (@Model.PageViewModel.PageNumber from @Model.PageViewModel.TotalPages)</span>
+            }
+        </div>
+    </div>
+</div>

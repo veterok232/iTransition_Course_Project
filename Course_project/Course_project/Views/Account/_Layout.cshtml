@@ -19,31 +19,42 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Reviews</a>
-                        </li>
-                    </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="HomeAuthorized" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="HomeAuthorized" asp-action="Reviews">Reviews</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="HomeAuthorized" asp-action="CreateReview">Create review</a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="HomeGuest" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="HomeGuest" asp-action="Reviews">Reviews</a>
+                            </li>
+                        </ul>
+                    }
                 </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml");
-                }
-                else
-                {
-                    await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml");
-                }
+                @RenderSection("UserNickname")
             </div>
         </nav>
     </header>
     <div class="container">
         <div class="row justify-content-end">
-            <form class="form-inline my-2 mr-3">
-                <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Поиск">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+            <form class="form-inline my-2 mr-3 mb-3">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
         <main role="main" class="pb-3">

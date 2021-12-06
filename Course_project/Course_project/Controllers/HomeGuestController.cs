@@ -1,10 +1,10 @@
-﻿using Course_project.Models;
+﻿using Course_project.Helper;
+using Course_project.Models;
+using Course_project.ViewModels.HomeGuest;
+using Course_project.ViewModels.ReviewsFilterSortPagination;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.Controllers
@@ -13,28 +13,37 @@ namespace Course_project.Controllers
     {
         private readonly ILogger<HomeGuestController> _logger;
 
-       // private ApplicationDbContext db;
+        private ApplicationDbContext db;
+
+        private HomeGuestHelper helper; 
 
         public HomeGuestController(
-            ILogger<HomeGuestController> logger)
+            ILogger<HomeGuestController> logger,
+            ApplicationDbContext context)
         {
             _logger = logger;
-            //db = context;
+            db = context;
+            helper = new HomeGuestHelper(context);
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> Index()
         {
-            //var reviews = db.Reviews.ToList();
-
-
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "HomeAuthorized");
-            return View();
+            return View(await helper.GetIndexViewModel());
         }
 
-        public IActionResult Reviews()
+        [HttpGet]
+        public async Task<IActionResult> Reviews(string title, string author, int groupId,
+            SortState sortOrder = SortState.PublicationDateDesc, int page = 1)
         {
-            return View();
+            return View(await helper.GetReviewsViewModel(title, author, groupId, sortOrder, page));
+        }
+
+        public async Task<IActionResult> ReadReview(string reviewId)
+        {
+            return View(await helper.GetReadReviewViewModel(reviewId));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

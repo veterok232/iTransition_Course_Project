@@ -1,0 +1,85 @@
+﻿@model Course_project.ViewModels.HomeGuest.ReadReviewViewModel
+@{
+    ViewData["Title"] = Model.Review.Title;
+}
+
+@section NavbarUserNickname
+{
+     @{await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml"); }
+}
+
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col text-left">
+            <h2 class="h2 font-weight-light pb-0 mb-1">@Model.Review.Title</h2>
+        </div>
+    </div>
+    <div class="row pt-0 mt-0">
+        <div class="col text-left">
+            <span>Group: @Model.ReviewGroups[Model.Review.GroupId]</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-left">
+            <span>Rating: @Model.Review.AverageRating</span>
+        </div>
+    </div>
+    <hr />
+    <div class="row justify-content-center mb-4">
+        <div class="col text-left">
+            <h3 class="h3 font-weight-bold pb-0 mb-4">@Model.Review.ReviewTitle</h3>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-2"></div>
+        <div class="col-9 text-left ">
+            <pre class="font-review">@Model.Review.Text</pre>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    @foreach (var image in Model.ReviewImages)
+    {
+        <div class="row justify-content-center mb-4">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <img src="@image.ImageUrl"
+                     alt="Review image" class="img-fluid" />
+            </div>
+            <div class="col-3"></div>
+        </div>
+    }
+
+    <div class="row justify-content-center pt-0 mt-0">
+        <div class="col text-center">
+            <span class="h3 font-weight-light">Author's mark: @Model.Review.AuthorMark from 10</span>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row pt-0 mt-0 pb-0 mb-0">
+                <div class="col">
+                    <p class="pt-0 mt-0 pb-0 mb-0">
+                        <span class="text-muted">@Model.Review.AuthorNickname</span>
+                        (<a asp-controller="Account"
+                            asp-action="UserPage"
+                            asp-route-userId="@Model.Review.AuthorId">#@Model.Review.AuthorUserName</a>)
+                        </p>
+                    </div>
+                </div>
+                <div class="row pt-0 mt-0 pb-0 mb-0">
+                    <div class="col">
+                        <p class="pt-0 mt-0 pb-0 mb-0">
+                            <span>@Model.Review.PublicationDate.ToString()</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 text-right">
+                <a href="">
+                    Like it!
+                </a>
+            </div>
+        </div>
+    </div>

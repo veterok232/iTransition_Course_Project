@@ -1,6 +1,11 @@
 ﻿@model Course_project.ViewModels.Account.LoginViewModel
-@{ 
+@{
     ViewData["Title"] = "Log in";
+}
+
+@section UserNickname
+{
+    @{ await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml"); }
 }
 
 <div class="container">

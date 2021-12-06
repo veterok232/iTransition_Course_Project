@@ -1,0 +1,122 @@
+﻿@model Course_project.ViewModels.HomeAuthorized.ReadReviewViewModel
+@{
+    ViewData["Title"] = Model.Review.Title;
+    Model.RatingViewModel = new RatingViewModel()
+    {
+        UserName = Model.UserName,
+        ReviewId = Model.Review.Id
+    };
+}
+
+@section NavbarUserNickname
+{
+    @if (User.Identity.IsAuthenticated)
+    {
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterAuthorized.cshtml", Model.UserNickname);
+    }
+    else
+    {
+        await Html.RenderPartialAsync("~/Views/Account/Partial/_LoginRegisterUnauthorized.cshtml");
+    }
+}
+
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col text-left">
+            <h2 class="h2 font-weight-light pb-0 mb-1">@Model.Review.Title</h2>
+        </div>
+    </div>
+    <div class="row pt-0 mt-0">
+        <div class="col text-left">
+            <span>Group: @Model.ReviewGroups[Model.Review.GroupId]</span>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+    <div class="row pt-0 mt-0">
+        <form method="post" asp-controller="HomeAuthorized" asp-action="VoteForReview">
+            <div class="col">
+                <div class="rating">
+                    <span>(@Model.Review.AverageRating)</span>
+                    <input type="radio" id="star-1" asp-for="@Model.RatingViewModel.UserVoice" value="5">
+                    <label for="star-1" title="Оценка «1»"></label>
+
+                    <input type="radio" id="star-2" asp-for="@Model.RatingViewModel.UserVoice" value="4">
+                    <label for="star-2" title="Оценка «2»"></label>
+
+                    <input type="radio" id="star-3" asp-for="@Model.RatingViewModel.UserVoice" value="3">
+                    <label for="star-3" title="Оценка «3»"></label>
+
+                    <input type="radio" id="star-4" asp-for="@Model.RatingViewModel.UserVoice" value="2">
+                    <label for="star-4" title="Оценка «4»"></label>
+
+                    <input type="radio" id="star-5" asp-for="@Model.RatingViewModel.UserVoice" value="1">
+                    <label for="star-5" title="Оценка «5»"></label>
+
+                    <input type="hidden" asp-for="@Model.RatingViewModel.UserName" value="@Model.UserName">
+                    <input type="hidden" asp-for="@Model.RatingViewModel.ReviewId" value="@Model.Review.Id">
+                </div>
+                <input class="btn btn-success" type="submit" value="Vote">
+            </div>
+        </form>
+    </div>
+    <hr />
+    <div class="row justify-content-center mb-4">
+        <div class="col text-left">
+            <h3 class="h3 font-weight-bold pb-0 mb-4">@Model.Review.ReviewTitle</h3>
+        </div>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-2"></div>
+        <div class="col-9 text-left ">
+            <pre class="font-review">@Model.Review.Text</pre>
+        </div>
+        <div class="col-1"></div>
+    </div>
+    @foreach (var image in Model.ReviewImages)
+    {
+        <div class="row justify-content-center mb-4">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <img src="@image.ImageUrl"
+                     alt="Review image" class="img-fluid" />
+            </div>
+            <div class="col-3"></div>
+        </div>
+    }
+
+    <div class="row justify-content-center pt-0 mt-0">
+        <div class="col text-center">
+            <span class="h3 font-weight-light">Author's mark: @Model.Review.AuthorMark from 10</span>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <div class="row pt-0 mt-0 pb-0 mb-0">
+                <div class="col">
+                    <p class="pt-0 mt-0 pb-0 mb-0">
+                        <span class="text-muted">@Model.Review.AuthorNickname</span>
+                        (<a asp-controller="Account"
+                            asp-action="UserPage"
+                            asp-route-userId="@Model.Review.AuthorId">#@Model.Review.AuthorUserName</a>)
+                        </p>
+                    </div>
+                </div>
+                <div class="row pt-0 mt-0 pb-0 mb-0">
+                    <div class="col">
+                        <p class="pt-0 mt-0 pb-0 mb-0">
+                            <span>@Model.Review.PublicationDate.ToString()</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 text-right">
+                <a href="">
+                    Like it!
+                </a>
+            </div>
+        </div>
+    </div>
