@@ -1,14 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Course_project.Models
 {
+    /// <summary>
+    /// User model class
+    /// </summary>
     public class User : IdentityUser
     {
+        /// <summary>
+        /// User identity
+        /// </summary>
         public static object Identity { get; internal set; }
+
+        /// <summary>
+        /// User nickname
+        /// </summary>
         public string Nickname { get; set; }
     }
 }

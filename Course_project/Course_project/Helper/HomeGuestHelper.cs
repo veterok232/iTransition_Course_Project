@@ -6,18 +6,35 @@ using System.Threading.Tasks;
 
 namespace Course_project.Helper
 {
+    /// <summary>
+    /// Helper class for HomeGuestController
+    /// </summary>
     internal class HomeGuestHelper : GeneralHelper
     {
+        /// <summary>
+        /// Database context
+        /// </summary>
         private ApplicationDbContext db;
 
+        /// <summary>
+        /// Helper for database interactions
+        /// </summary>
         private DatabaseInteractionHelper databaseHelper;
 
+        /// <summary>
+        /// Constructor for HomeGuestHelper class
+        /// </summary>
+        /// <param name="context"></param>
         internal HomeGuestHelper(ApplicationDbContext context)
         {
             db = context;
             databaseHelper = new DatabaseInteractionHelper(context, null);
         }
 
+        /// <summary>
+        /// Get IndexViewModel
+        /// </summary>
+        /// <returns>Task<IndexViewModel></returns>
         internal async Task<IndexViewModel> GetIndexViewModel()
         {
             var viewModel = new IndexViewModel();
@@ -32,6 +49,15 @@ namespace Course_project.Helper
             return viewModel;
         }
 
+        /// <summary>
+        /// Get ReviewsViewModel
+        /// </summary>
+        /// <param name="title">Title</param>
+        /// <param name="author">Author</param>
+        /// <param name="groupId">Group Id</param>
+        /// <param name="sortOrder">Sort order</param>
+        /// <param name="page">Page</param>
+        /// <returns>Task<ReviewsViewModel></returns>
         internal async Task<ReviewsViewModel> GetReviewsViewModel(string title, string author, int groupId,
             SortState sortOrder = SortState.PublicationDateDesc, int page = 1)
         {
@@ -48,6 +74,11 @@ namespace Course_project.Helper
             return viewModel;
         }
 
+        /// <summary>
+        /// Get ReadReviewViewModel
+        /// </summary>
+        /// <param name="reviewId">Review Id</param>
+        /// <returns>Task<ReadReviewViewModel></returns>
         internal async Task<ReadReviewViewModel> GetReadReviewViewModel(string reviewId)
         {
             return new ReadReviewViewModel()

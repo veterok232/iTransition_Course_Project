@@ -14,17 +14,38 @@ using Course_project.ViewModels.ReviewsFilterSortPagination;
 
 namespace Course_project.Helper
 {
+    /// <summary>
+    /// Helper for HomeAuthorizedController
+    /// </summary>
     internal class HomeAuthorizedHelper : GeneralHelper
     {
+        /// <summary>
+        /// Cloud storage
+        /// </summary>
         private ICloudStorage cloudStorage;
 
+        /// <summary>
+        /// User manager
+        /// </summary>
         private UserManager<User> userManager;
 
+        /// <summary>
+        /// Database context
+        /// </summary>
         private ApplicationDbContext db;
 
+        /// <summary>
+        /// Helper for database interactions
+        /// </summary>
         private DatabaseInteractionHelper databaseHelper;
 
-        public HomeAuthorizedHelper(
+        /// <summary>
+        /// Constructor for HomeAuthorizedHelper class
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <param name="cloudStorage">Cloud storage</param>
+        /// <param name="userManager">User manager</param>
+        internal HomeAuthorizedHelper(
             ApplicationDbContext context, 
             ICloudStorage cloudStorage, 
             UserManager<User> userManager)
@@ -35,6 +56,11 @@ namespace Course_project.Helper
             databaseHelper = new DatabaseInteractionHelper(context, userManager);
         }
 
+        /// <summary>
+        /// Get IndexViewModel
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <returns>Task<IndexViewModel></returns>
         internal async Task<IndexViewModel> GetIndexViewModel(string userName)
         {
             var viewModel = new IndexViewModel();
@@ -51,6 +77,11 @@ namespace Course_project.Helper
             return viewModel;
         }
 
+        /// <summary>
+        /// Get ReviewViewModel
+        /// </summary>
+        /// <param name="userIdentity">User identity</param>
+        /// <returns>Task<ReviewViewModel></returns>
         internal async Task<ReviewViewModel> GetReviewViewModel(IIdentity userIdentity)
         {
             var user = await userManager.FindByNameAsync(userIdentity.Name);
@@ -73,6 +104,11 @@ namespace Course_project.Helper
             };
         }
 
+        /// <summary>
+        /// Upload image to Google Cloud
+        /// </summary>
+        /// <param name="reviewImage">Review image</param>
+        /// <returns>Task</returns>
         internal async Task UploadImage(ReviewImage reviewImage)
         {
             string fileNameForStorage = CreateFileName(reviewImage.ImageFile.FileName);
@@ -81,6 +117,12 @@ namespace Course_project.Helper
             reviewImage.ImageFileName = reviewImage.ImageFile.FileName;
         }
 
+        /// <summary>
+        /// Add review images to database
+        /// </summary>
+        /// <param name="uploads">Images to upload</param>
+        /// <param name="reviewId">Review Id</param>
+        /// <returns>Task<string></returns>
         internal async Task<string> AddReviewImagesToDb(IFormFileCollection uploads, string reviewId)
         {
             var reviewImages = new List<ReviewImage>();
@@ -98,12 +140,24 @@ namespace Course_project.Helper
             return reviewImages.Count > 0 ? reviewImages[0].ImageUrl : null;
         }
 
+        /// <summary>
+        /// Update review images in database
+        /// </summary>
+        /// <param name="uploads">Uploads</param>
+        /// <param name="reviewId">Review Id</param>
+        /// <returns>Task<string></returns>
         internal async Task<string> UpdateReviewImagesInDb(IFormFileCollection uploads, string reviewId)
         {
             await databaseHelper.DeleteReviewImages(reviewId);
             return await AddReviewImagesToDb(uploads, reviewId);
         }
 
+        /// <summary>
+        /// Get ReadReviewViewModel
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <param name="reviewId">Review Id</param>
+        /// <returns>Task<ReadReviewViewModel></returns>
         internal async Task<ReadReviewViewModel> GetReadReviewViewModel(string userName, string reviewId)
         {
             return new ReadReviewViewModel()
@@ -117,6 +171,16 @@ namespace Course_project.Helper
             };
         }
 
+        /// <summary>
+        /// Get ReviewsViewModel
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <param name="title">Title</param>
+        /// <param name="author">Author</param>
+        /// <param name="groupId">Group Id</param>
+        /// <param name="sortOrder">Sort order</param>
+        /// <param name="page">Page</param>
+        /// <returns>Task<ReviewsViewModel></returns>
         internal async Task<ReviewsViewModel> GetReviewsViewModel(
             string userName, string title, string author, int groupId,
             SortState sortOrder = SortState.PublicationDateDesc, int page = 1)
@@ -136,6 +200,12 @@ namespace Course_project.Helper
             return viewModel;
         }
 
+        /// <summary>
+        /// Get ReviewViewModel for edit review
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <param name="reviewId">Review Id</param>
+        /// <returns>Task<ReviewViewModel></returns>
         internal async Task<ReviewViewModel> GetEditReviewViewModel(string userName, string reviewId)
         {
             var viewModel = new ReviewViewModel();
@@ -152,6 +222,12 @@ namespace Course_project.Helper
             return viewModel;
         }
 
+        /// <summary>
+        /// Get DeleteReviewViewModel
+        /// </summary>
+        /// <param name="reviewId">Review Id</param>
+        /// <param name="userName">User name</param>
+        /// <returns>Task<DeleteReviewViewModel></returns>
         internal async Task<DeleteReviewViewModel> GetDeleteReviewViewModel(string reviewId, string userName)
         {
             return new DeleteReviewViewModel()
@@ -161,6 +237,11 @@ namespace Course_project.Helper
             };
         }
 
+        /// <summary>
+        /// Create unique file name for storage in Google Cloud
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private string CreateFileName(string fileName)
         {
             var fileExtension = Path.GetExtension(fileName);
@@ -170,6 +251,11 @@ namespace Course_project.Helper
             return fileNameForStorage;
         }
 
+        /// <summary>
+        /// Create ReviewGroups select list
+        /// </summary>
+        /// <param name="reviewGroups">Review groups</param>
+        /// <returns>List<SelectListItem></returns>
         private List<SelectListItem> CreateReviewGroupsList(List<ReviewGroup> reviewGroups)
         {
             var result = new List<SelectListItem>();
@@ -181,6 +267,10 @@ namespace Course_project.Helper
             return result;
         }
 
+        /// <summary>
+        /// Create review marks select list
+        /// </summary>
+        /// <returns>List<SelectListItem></returns>
         private List<SelectListItem> CreateReviewMarksList()
         {
             var result = new List<SelectListItem>();

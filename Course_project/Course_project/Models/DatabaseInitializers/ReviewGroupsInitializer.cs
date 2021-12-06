@@ -1,12 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.Models.DatabaseInitializers
 {
+    /// <summary>
+    /// Initializer class for review groups
+    /// </summary>
     public class ReviewGroupsInitializer
     {
+        /// <summary>
+        /// Initialize review groups in database
+        /// </summary>
+        /// <param name="context">Database context</param>
+        /// <returns>Task</returns>
         public static async Task InitializeAsync(ApplicationDbContext context)
         {
             if (!context.ReviewGroups.Any())

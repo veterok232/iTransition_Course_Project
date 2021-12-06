@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace Course_project.Services
 {
+    /// <summary>
+    /// Service for sending emails
+    /// </summary>
     public class EmailService
     {
+        /// <summary>
+        /// Send email
+        /// </summary>
+        /// <param name="email">Email</param>
+        /// <param name="subject">Subject</param>
+        /// <param name="message">Message</param>
+        /// <returns>Task</returns>
         public async Task SendEmailAsync(string email, string subject, string message)
         {
             var emailMessage = new MimeMessage();

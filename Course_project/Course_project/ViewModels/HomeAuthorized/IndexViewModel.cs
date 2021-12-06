@@ -1,25 +1,42 @@
 ﻿using Course_project.Models;
-using Course_project.ViewModels.ReviewsFilterSortPagination;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Course_project.ViewModels.HomeAuthorized
 {
+    /// <summary>
+    /// View model for Index page
+    /// </summary>
     public class IndexViewModel
     {
+        /// <summary>
+        /// List of most rating reviews
+        /// </summary>
         public List<Review> ReviewsMostRating { get; set; }
 
+        /// <summary>
+        /// List of last reviews
+        /// </summary>
         public List<Review> ReviewsLast { get; set; }
 
+        /// <summary>
+        /// Dictionary of review groups
+        /// </summary>
         public Dictionary<int, string> ReviewGroups { get; set; }
 
+        /// <summary>
+        /// User nickname
+        /// </summary>
         public string UserNickname { get; set; }
 
+        /// <summary>
+        /// User name
+        /// </summary>
         public string UserName { get; set; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public IndexViewModel()
         {
             ReviewsMostRating = new List<Review>();

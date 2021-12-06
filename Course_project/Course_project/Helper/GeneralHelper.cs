@@ -10,12 +10,29 @@ using System.Threading.Tasks;
 
 namespace Course_project.Helper
 {
+    /// <summary>
+    /// General class for helpers
+    /// </summary>
     public class GeneralHelper
     {
+        /// <summary>
+        /// Reviews page size
+        /// </summary>
         internal const int REVIEWS_PAGE_SIZE = 5;
 
+        /// <summary>
+        /// Index page size
+        /// </summary>
         internal const int INDEX_PAGE_SIZE = 5;
 
+        /// <summary>
+        /// Get FilterViewModel
+        /// </summary>
+        /// <param name="reviewGroups">Review groups</param>
+        /// <param name="selectedGroupId">Selected group Id</param>
+        /// <param name="title">Title</param>
+        /// <param name="author">Author name</param>
+        /// <returns>FilterViewModel</returns>
         internal FilterViewModel GetFilterViewModel(
             List<string> reviewGroups,
             int selectedGroupId,
@@ -39,6 +56,11 @@ namespace Course_project.Helper
             };
         }
 
+        /// <summary>
+        /// Get SortViewModel
+        /// </summary>
+        /// <param name="sortOrder">Sort order</param>
+        /// <returns>SortViewModel</returns>
         internal virtual SortViewModel GetSortViewModel(SortState sortOrder)
         {
             var viewModel = new SortViewModel(SortState.PublicationDateDesc)
@@ -61,11 +83,25 @@ namespace Course_project.Helper
             return viewModel;
         }
 
+        /// <summary>
+        /// Get PageViewModel
+        /// </summary>
+        /// <param name="count">Count</param>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Page size</param>
+        /// <returns>PageViewModel</returns>
         internal PageViewModel GetPageViewModel(int count, int page, int pageSize)
         {
             return new PageViewModel(count, page, pageSize);
         }
 
+        /// <summary>
+        /// Filter reviews by title, author and group
+        /// </summary>
+        /// <param name="reviews">Reviews</param>
+        /// <param name="title">Title</param>
+        /// <param name="author">Author</param>
+        /// <param name="groupId">Group Id</param>
         internal void FilterReviews(ref IQueryable<Review> reviews, string title, string author, int groupId)
         {
             if (!String.IsNullOrEmpty(title))
@@ -82,6 +118,11 @@ namespace Course_project.Helper
             }
         }
 
+        /// <summary>
+        /// Sort reviews by sortOrder criteria
+        /// </summary>
+        /// <param name="reviews">Reviews</param>
+        /// <param name="sortOrder">Sort order</param>
         internal void SortReviews(ref IQueryable<Review> reviews, SortState sortOrder)
         {
             switch (sortOrder)
@@ -116,11 +157,23 @@ namespace Course_project.Helper
             }
         }
 
+        /// <summary>
+        /// Get reviews on current page
+        /// </summary>
+        /// <param name="reviews">Reviews</param>
+        /// <param name="page">Page</param>
+        /// <param name="pageSize">Page size</param>
+        /// <returns>Task<List<Review>></returns>
         internal async Task<List<Review>> GetPageReviews(IQueryable<Review> reviews, int page, int pageSize)
         {
             return await reviews.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
+        /// <summary>
+        /// Get reviews count
+        /// </summary>
+        /// <param name="reviews">Reviews</param>
+        /// <returns>Task<int></returns>
         internal async Task<int> GetReviewsCount(IQueryable<Review> reviews)
         {
             return await reviews.CountAsync();

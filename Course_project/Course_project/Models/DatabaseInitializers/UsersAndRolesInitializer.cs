@@ -1,13 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.Models.DatabaseInitializers
 {
+    /// <summary>
+    /// Initializer class for users and roles in database
+    /// </summary>
     public class UsersAndRolesInitializer
     {
+        /// <summary>
+        /// Initialize users and roles in database
+        /// </summary>
+        /// <param name="userManager">User manager</param>
+        /// <param name="roleManager">Role manager</param>
+        /// <returns></returns>
         public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             string adminEmail = "admin@gmail.com";

@@ -3,19 +3,35 @@ using Google.Cloud.Storage.V1;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Course_project.CloudStorage
 {
+    /// <summary>
+    /// GoogleCloudStorage class
+    /// </summary>
     public class GoogleCloudStorage : ICloudStorage
     {
+        /// <summary>
+        /// Google credential
+        /// </summary>
         private readonly GoogleCredential googleCredential;
+
+        /// <summary>
+        /// Storage client
+        /// </summary>
         private readonly StorageClient storageClient;
+
+        /// <summary>
+        /// Bucket name
+        /// </summary>
         private readonly string bucketName;
 
+        /// <summary>
+        /// Constructor of GoogleCloudStorage class
+        /// </summary>
+        /// <param name="configuration">Configuration</param>
         public GoogleCloudStorage(IConfiguration configuration)
         {
             googleCredential = GoogleCredential.FromFile(configuration.GetValue<string>("GoogleCredentialFile"));
@@ -23,11 +39,22 @@ namespace Course_project.CloudStorage
             bucketName = configuration.GetValue<string>("GoogleCloudStorageBucket");
         }
 
+        /// <summary>
+        /// Delete file from Google Cloud storage
+        /// </summary>
+        /// <param name="fileNameForStorage">File name</param>
+        /// <returns>Task</returns>
         public async Task DeleteFileAsync(string fileNameForStorage)
         {
             await storageClient.DeleteObjectAsync(bucketName, fileNameForStorage);
         }
 
+        /// <summary>
+        /// Upload file to Google Cloud storage
+        /// </summary>
+        /// <param name="imageFile">File to upload</param>
+        /// <param name="fileNameForStorage">File name</param>
+        /// <returns>Task<string></returns>
         public async Task<string> UploadFileAsync(IFormFile imageFile, string fileNameForStorage)
         {
             using (var memoryStream = new MemoryStream())
